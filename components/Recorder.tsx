@@ -286,7 +286,10 @@ export const Recorder: React.FC<RecorderProps> = ({ settings, onSessionComplete,
               ))}
             </div>
 
-            <div className="glass-dark rounded-[2.5rem] p-6 flex items-start gap-5">
+            <button
+              onClick={startRecording}
+              className="glass-dark rounded-[2.5rem] p-6 flex items-start gap-5 hover:glass-bright transition-all active:scale-95 w-full text-left"
+            >
               <div className="w-12 h-12 rounded-2xl glass-bright flex items-center justify-center shrink-0 shadow-lg">
                 <Activity className="w-6 h-6 text-zinc-300" />
               </div>
@@ -296,7 +299,7 @@ export const Recorder: React.FC<RecorderProps> = ({ settings, onSessionComplete,
                   Words are transcribed instantly as you speak. Local Ollama handles the heavy lifting after you finish.
                 </p>
               </div>
-            </div>
+            </button>
           </div>
         ) : (
           <div className="flex flex-col items-center justify-center space-y-10 py-4 animate-in zoom-in-95 duration-500">
