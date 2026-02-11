@@ -9,7 +9,6 @@ interface RecorderProps {
   onSessionComplete: (session: Session) => void;
 }
 
-// Extend Window interface for Web Speech API
 declare global {
   interface Window {
     SpeechRecognition: any;
@@ -70,7 +69,6 @@ export const Recorder: React.FC<RecorderProps> = ({ settings, onSessionComplete 
           }
         }
 
-        // Update the buffer with final parts and show interim parts live
         if (finalTranscript) {
           transcriptBufferRef.current += finalTranscript + ' ';
         }
