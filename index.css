@@ -1,0 +1,296 @@
+/* Enhanced Button Liquid Glass Effects with Mouse Tracking */
+
+/* Liquid Button Base Styles */
+.liquid-btn {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.liquid-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.4) 0%, transparent 70%);
+    transform: translate(-50%, -50%);
+    transition: width 0.8s cubic-bezier(0.23, 1, 0.32, 1), height 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.liquid-btn:hover::before {
+    width: 400px;
+    height: 400px;
+}
+
+/* Ambient Light Trail Effect */
+.liquid-btn::after {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    background: conic-gradient(
+        from var(--angle, 0deg),
+        transparent 0%,
+        rgba(6, 182, 212, 0.4) 10%,
+        rgba(139, 92, 246, 0.4) 20%,
+        transparent 30%,
+        transparent 100%
+    );
+    border-radius: inherit;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    animation: rotate-gradient 4s linear infinite;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.liquid-btn:hover::after {
+    opacity: 1;
+}
+
+@keyframes rotate-gradient {
+    0% {
+        --angle: 0deg;
+        transform: rotate(0deg);
+    }
+    100% {
+        --angle: 360deg;
+        transform: rotate(360deg);
+    }
+}
+
+/* Glass Morph on Hover */
+.glass-morph-hover {
+    transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.glass-morph-hover:hover {
+    backdrop-filter: blur(30px) saturate(200%);
+    -webkit-backdrop-filter: blur(30px) saturate(200%);
+    animation: liquid-morph 2s ease-in-out infinite;
+}
+
+/* Glow Pulse Effect */
+.glow-pulse-hover:hover {
+    animation: glow-pulse 2s ease-in-out infinite;
+}
+
+/* Shimmer Effect on Hover */
+.shimmer-hover {
+    position: relative;
+    overflow: hidden;
+}
+
+.shimmer-hover::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.3),
+        transparent
+    );
+    transition: left 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.shimmer-hover:hover::before {
+    left: 100%;
+}
+
+/* Magnetic Button Effect */
+.magnetic-btn {
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Floating Animation */
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-8px);
+    }
+}
+
+.float-hover:hover {
+    animation: float 2s ease-in-out infinite;
+}
+
+/* Ripple Effect */
+.ripple-effect {
+    position: relative;
+    overflow: hidden;
+}
+
+.ripple-effect::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s ease, height 0.6s ease, opacity 0.6s ease;
+    opacity: 0;
+}
+
+.ripple-effect:active::after {
+    width: 300px;
+    height: 300px;
+    opacity: 1;
+    transition: 0s;
+}
+
+/* Neon Glow Border */
+.neon-border-hover {
+    position: relative;
+}
+
+.neon-border-hover::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    background: linear-gradient(
+        45deg,
+        #06b6d4,
+        #8b5cf6,
+        #ec4899,
+        #06b6d4
+    );
+    border-radius: inherit;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    z-index: -1;
+    background-size: 300% 300%;
+    animation: gradient-shift 3s ease infinite;
+}
+
+.neon-border-hover:hover::before {
+    opacity: 1;
+}
+
+@keyframes gradient-shift {
+    0%, 100% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+}
+
+/* Particle Burst Effect */
+@keyframes particle-burst {
+    0% {
+        transform: scale(0) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(2) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* Holographic Effect */
+.holographic-hover {
+    position: relative;
+    background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.05),
+        rgba(255, 255, 255, 0.02)
+    );
+}
+
+.holographic-hover::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        135deg,
+        rgba(6, 182, 212, 0.2) 0%,
+        rgba(139, 92, 246, 0.2) 25%,
+        rgba(236, 72, 153, 0.2) 50%,
+        rgba(139, 92, 246, 0.2) 75%,
+        rgba(6, 182, 212, 0.2) 100%
+    );
+    background-size: 200% 200%;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    border-radius: inherit;
+}
+
+.holographic-hover:hover::before {
+    opacity: 1;
+    animation: holographic-shift 3s ease infinite;
+}
+
+@keyframes holographic-shift {
+    0%, 100% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+}
+
+/* Liquid Spread Effect */
+.liquid-spread {
+    position: relative;
+    overflow: hidden;
+}
+
+.liquid-spread::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: radial-gradient(
+        circle,
+        rgba(6, 182, 212, 0.3) 0%,
+        rgba(139, 92, 246, 0.2) 50%,
+        transparent 70%
+    );
+    transform: translate(-50%, -50%);
+    transition: width 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), 
+                height 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+    border-radius: 50%;
+}
+
+.liquid-spread:hover::before {
+    width: 500px;
+    height: 500px;
+}
+
+/* Glitch Effect */
+@keyframes glitch {
+    0%, 100% {
+        transform: translate(0);
+    }
+    20% {
+        transform: translate(-2px, 2px);
+    }
+    40% {
+        transform: translate(-2px, -2px);
+    }
+    60% {
+        transform: translate(2px, 2px);
+    }
+    80% {
+        transform: translate(2px, -2px);
+    }
+}
+
+.glitch-hover:active {
+    animation: glitch 0.3s ease;
+}

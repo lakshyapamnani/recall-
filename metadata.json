@@ -1,0 +1,8 @@
+
+{
+  "name": "Recall",
+  "description": "A privacy-first, offline-only second brain for recording meetings and lectures with local AI transcription and summarization.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
