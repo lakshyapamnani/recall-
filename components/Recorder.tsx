@@ -27,6 +27,7 @@ export const Recorder: React.FC<RecorderProps> = ({ settings, onSessionComplete 
   const recognitionRef = useRef<any>(null);
   const timerRef = useRef<number | null>(null);
   const transcriptBufferRef = useRef<string>('');
+  const lastProcessedIndexRef = useRef<number>(0);
 
   useEffect(() => {
     // Initialize Web Speech API
@@ -60,17 +61,22 @@ export const Recorder: React.FC<RecorderProps> = ({ settings, onSessionComplete 
         let interimTranscript = '';
         let finalTranscript = '';
 
+        // Only process new results to avoid duplicates
         for (let i = event.resultIndex; i < event.results.length; ++i) {
           if (event.results[i].isFinal) {
-            finalTranscript += event.results[i][0].transcript;
-            console.log('📝 Final transcript:', event.results[i][0].transcript);
+            // Only add if we haven't processed this index yet
+            if (i >= lastProcessedIndexRef.current) {
+              finalTranscript += event.results[i][0].transcript + ' ';
+              console.log('📝 Final transcript (index ' + i + '):', event.results[i][0].transcript);
+              lastProcessedIndexRef.current = i + 1;
+            }
           } else {
             interimTranscript += event.results[i][0].transcript;
           }
         }
 
         if (finalTranscript) {
-          transcriptBufferRef.current += finalTranscript + ' ';
+          transcriptBufferRef.current += finalTranscript;
         }
         setLiveTranscript(transcriptBufferRef.current + interimTranscript);
       };
@@ -145,6 +151,7 @@ export const Recorder: React.FC<RecorderProps> = ({ settings, onSessionComplete 
       setError(null);
       setLiveTranscript('');
       transcriptBufferRef.current = '';
+      lastProcessedIndexRef.current = 0;
 
       console.log('▶️ Starting speech recognition...');
       recognitionRef.current.start();
