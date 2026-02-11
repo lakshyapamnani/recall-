@@ -118,7 +118,10 @@ const App: React.FC = () => {
     return (
       <SummaryView
         session={selectedSession}
-        onBack={() => setSelectedSession(null)}
+        onBack={() => {
+          setSelectedSession(null);
+          setActiveTab('library');
+        }}
         onDelete={handleDeleteSession}
         onUpdateTitle={handleUpdateTitle}
       />
