@@ -7,8 +7,14 @@ export class AIService {
    * Summarizes the transcript using Google Gemini API.
    */
   static async summarize(transcript: string, mode: SessionMode, settings: AppSettings): Promise<SummaryOutput> {
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-    
+    const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+
+    if (!apiKey) {
+      throw new Error('API key not found. Please set VITE_GEMINI_API_KEY in .env.local');
+    }
+
+    const ai = new GoogleGenAI({ apiKey });
+
     const prompt = `Analyze this ${mode} transcript. Extract a concise summary, key takeaways, and relevant ${mode === SessionMode.MEETING ? 'action items' : 'main concepts'}. 
     Transcript: ${transcript}`;
 
