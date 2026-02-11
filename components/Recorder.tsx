@@ -107,15 +107,6 @@ export const Recorder: React.FC<RecorderProps> = ({ settings, onSessionComplete,
 
       recognition.onend = () => {
         console.log('🛑 Speech recognition ended');
-        // If we were supposed to be recording, restart (Web Speech API sometimes timeouts)
-        if (isRecording && recognitionRef.current) {
-          try {
-            console.log('🔄 Restarting speech recognition...');
-            recognitionRef.current.start();
-          } catch (e) {
-            console.error('❌ Speech recognition restart failed:', e);
-          }
-        }
       };
 
       recognitionRef.current = recognition;
@@ -137,6 +128,24 @@ export const Recorder: React.FC<RecorderProps> = ({ settings, onSessionComplete,
         }
       }
     };
+  }, []);
+
+  // Handle speech recognition restart when it times out
+  useEffect(() => {
+    if (recognitionRef.current) {
+      recognitionRef.current.onend = () => {
+        console.log('🛑 Speech recognition ended');
+        // If we were supposed to be recording, restart (Web Speech API sometimes timeouts)
+        if (isRecording) {
+          try {
+            console.log('🔄 Restarting speech recognition...');
+            recognitionRef.current.start();
+          } catch (e) {
+            console.error('❌ Speech recognition restart failed:', e);
+          }
+        }
+      };
+    }
   }, [isRecording]);
 
   const startRecording = async () => {
