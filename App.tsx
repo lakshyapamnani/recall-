@@ -97,8 +97,8 @@ const App: React.FC = () => {
     }
   };
 
-  const filteredSessions = sessions.filter(s => 
-    s.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+  const filteredSessions = sessions.filter(s =>
+    s.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
     s.summary.shortSummary.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
@@ -116,9 +116,9 @@ const App: React.FC = () => {
 
   if (selectedSession) {
     return (
-      <SummaryView 
-        session={selectedSession} 
-        onBack={() => setSelectedSession(null)} 
+      <SummaryView
+        session={selectedSession}
+        onBack={() => setSelectedSession(null)}
         onDelete={handleDeleteSession}
         onUpdateTitle={handleUpdateTitle}
       />
@@ -140,7 +140,7 @@ const App: React.FC = () => {
             <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
             <span className="text-[10px] font-black text-zinc-300 uppercase tracking-widest">Local AI Core</span>
           </div>
-          <button 
+          <button
             onClick={() => setIsSettingsOpen(true)}
             className="w-10 h-10 glass-dark hover:glass-bright rounded-full flex items-center justify-center transition-all text-zinc-400 hover:text-white"
           >
@@ -153,7 +153,11 @@ const App: React.FC = () => {
       <main className="flex-1 overflow-y-auto pb-32">
         {activeTab === 'capture' && (
           <div className="animate-in fade-in slide-in-from-bottom-2 duration-500">
-            <Recorder settings={settings} onSessionComplete={handleSessionComplete} />
+            <Recorder
+              settings={settings}
+              onSessionComplete={handleSessionComplete}
+              onBack={() => setActiveTab('library')}
+            />
           </div>
         )}
 
@@ -163,7 +167,7 @@ const App: React.FC = () => {
               <h2 className="text-4xl font-black tracking-tight">Memories</h2>
               <div className="relative group">
                 <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-600 group-focus-within:text-cyan-400 transition-colors" />
-                <input 
+                <input
                   type="text"
                   placeholder="Recall something..."
                   className="w-full glass-dark border-transparent focus:glass-bright focus:border-white/20 rounded-[1.5rem] py-5 pl-14 pr-6 text-white text-lg font-medium transition-all placeholder:text-zinc-700"
@@ -176,10 +180,10 @@ const App: React.FC = () => {
             {filteredSessions.length > 0 ? (
               <div className="grid grid-cols-1 gap-5">
                 {filteredSessions.map(session => (
-                  <SessionCard 
-                    key={session.id} 
-                    session={session} 
-                    onClick={() => setSelectedSession(session)} 
+                  <SessionCard
+                    key={session.id}
+                    session={session}
+                    onClick={() => setSelectedSession(session)}
                   />
                 ))}
               </div>
@@ -189,8 +193,8 @@ const App: React.FC = () => {
                   <Library className="w-10 h-10 text-zinc-400" />
                 </div>
                 <div className="space-y-2">
-                    <p className="text-xl font-bold text-zinc-400">Silence is empty</p>
-                    <p className="text-zinc-600 font-medium">Capture your first meeting to begin.</p>
+                  <p className="text-xl font-bold text-zinc-400">Silence is empty</p>
+                  <p className="text-zinc-600 font-medium">Capture your first meeting to begin.</p>
                 </div>
               </div>
             )}
@@ -199,9 +203,9 @@ const App: React.FC = () => {
 
         {activeTab === 'tasks' && (
           <div className="animate-in fade-in slide-in-from-bottom-2 duration-500">
-            <TasksView 
-              tasks={tasks} 
-              onToggle={toggleTask} 
+            <TasksView
+              tasks={tasks}
+              onToggle={toggleTask}
               onDelete={deleteTask}
               onGoToSession={goToSessionFromTask}
             />
@@ -215,31 +219,31 @@ const App: React.FC = () => {
         )}
 
         {activeTab === 'setup' && (
-           <div className="animate-in fade-in slide-in-from-bottom-2 duration-500">
-             <SetupGuide />
-           </div>
+          <div className="animate-in fade-in slide-in-from-bottom-2 duration-500">
+            <SetupGuide />
+          </div>
         )}
       </main>
 
       {/* Settings Modal */}
       {isSettingsOpen && (
-        <SettingsModal 
-          settings={settings} 
-          onSave={saveSettings} 
-          onClose={() => setIsSettingsOpen(false)} 
+        <SettingsModal
+          settings={settings}
+          onSave={saveSettings}
+          onClose={() => setIsSettingsOpen(false)}
         />
       )}
 
       {/* Apple Glass Bottom Navigation Pill with Glide Effect */}
       <div className="fixed bottom-0 left-0 right-0 z-50 p-6 flex justify-center items-end pointer-events-none pb-10">
         <div className="relative glass-dark border border-white/10 p-2 flex gap-1 rounded-[2.5rem] shadow-[0_30px_60px_-15px_rgba(0,0,0,0.8)] pointer-events-auto max-w-md w-full mx-auto backdrop-blur-3xl overflow-hidden">
-          
+
           {/* Liquid Glide Indicator */}
-          <div 
+          <div
             className="absolute top-2 bottom-2 bg-white/10 backdrop-blur-md rounded-[2rem] transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] shadow-[0_4px_12px_rgba(255,255,255,0.05)] border border-white/10"
-            style={{ 
-              left: `calc(0.5rem + ${activeIndex * 20}%)`, 
-              width: 'calc(20% - 0.5rem)' 
+            style={{
+              left: `calc(0.5rem + ${activeIndex * 20}%)`,
+              width: 'calc(20% - 0.5rem)'
             }}
           />
 
@@ -247,12 +251,11 @@ const App: React.FC = () => {
             const Icon = item.icon;
             const isActive = activeTab === item.id;
             return (
-              <button 
+              <button
                 key={item.id}
                 onClick={() => setActiveTab(item.id as any)}
-                className={`flex-1 relative py-3.5 rounded-[2rem] flex flex-col items-center gap-1.5 transition-all duration-500 ${
-                  isActive ? 'text-white' : 'text-zinc-500 hover:text-zinc-300'
-                }`}
+                className={`flex-1 relative py-3.5 rounded-[2rem] flex flex-col items-center gap-1.5 transition-all duration-500 ${isActive ? 'text-white' : 'text-zinc-500 hover:text-zinc-300'
+                  }`}
               >
                 <div className={`relative transition-all duration-500 ${isActive ? 'scale-125 -translate-y-0.5' : 'scale-100'}`}>
                   <Icon className={`w-6 h-6 transition-all duration-500 ${isActive ? 'drop-shadow-[0_0_8px_rgba(255,255,255,0.4)]' : ''}`} />
