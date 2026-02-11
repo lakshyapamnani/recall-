@@ -7,6 +7,7 @@ import { AIService } from '../services/ai';
 interface RecorderProps {
   settings: AppSettings;
   onSessionComplete: (session: Session) => void;
+  onBack?: () => void;
 }
 
 declare global {
@@ -16,7 +17,7 @@ declare global {
   }
 }
 
-export const Recorder: React.FC<RecorderProps> = ({ settings, onSessionComplete }) => {
+export const Recorder: React.FC<RecorderProps> = ({ settings, onSessionComplete, onBack }) => {
   const [isRecording, setIsRecording] = useState(false);
   const [recordingTime, setRecordingTime] = useState(0);
   const [liveTranscript, setLiveTranscript] = useState('');
@@ -245,12 +246,20 @@ export const Recorder: React.FC<RecorderProps> = ({ settings, onSessionComplete 
 
   return (
     <div className="w-full max-w-md mx-auto py-8 px-6 flex flex-col min-h-[80vh]">
+      {/* Back Button */}
+      {onBack && (
+        <button
+          onClick={onBack}
+          className="absolute top-6 left-6 w-10 h-10 glass-dark rounded-full flex items-center justify-center hover:glass-bright transition-all active:scale-95"
+        >
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
+      )}
+
       <div className="flex-1 space-y-10">
         <header className="text-center space-y-3">
-          <div className="inline-flex items-center gap-2 px-3 py-1 glass-dark rounded-full mb-2">
-            <Shield className="w-3 h-3 text-cyan-400" />
-            <span className="text-[10px] font-black uppercase tracking-widest text-zinc-400">Zero Cloud Processing</span>
-          </div>
           <h1 className="text-5xl font-black tracking-tighter text-white">Capture</h1>
         </header>
 
@@ -300,10 +309,13 @@ export const Recorder: React.FC<RecorderProps> = ({ settings, onSessionComplete 
 
             <div className="relative">
               <div className="absolute inset-0 pulse-ring bg-cyan-500/20 rounded-full blur-xl"></div>
-              <div className="relative w-48 h-48 rounded-full glass border-white/10 flex items-center justify-center shadow-2xl">
+              <button
+                onClick={stopRecording}
+                className="relative w-48 h-48 rounded-full glass border-white/10 flex items-center justify-center shadow-2xl active:scale-95 transition-all"
+              >
                 <div className="w-40 h-40 rounded-full glass-bright flex items-center justify-center shadow-inner border-white/20">
                   <div className="w-32 h-32 rounded-full bg-white flex items-center justify-center shadow-2xl overflow-hidden relative">
-                    <Mic className="w-12 h-12 text-black z-10" />
+                    <Square className="w-12 h-12 text-black z-10 fill-black" />
                     {/* Animated sound bars */}
                     <div className="absolute bottom-0 left-0 right-0 flex items-end justify-center gap-1 pb-8 h-full">
                       {[...Array(5)].map((_, i) => (
@@ -316,7 +328,7 @@ export const Recorder: React.FC<RecorderProps> = ({ settings, onSessionComplete 
                     </div>
                   </div>
                 </div>
-              </div>
+              </button>
             </div>
 
             {/* Live Transcript Card */}
@@ -347,26 +359,6 @@ export const Recorder: React.FC<RecorderProps> = ({ settings, onSessionComplete 
           <button onClick={() => setError(null)} className="text-[10px] uppercase font-black opacity-50 hover:opacity-100">Dismiss</button>
         </div>
       )}
-
-      <div className="pt-6 pb-4">
-        {!isRecording ? (
-          <button
-            onClick={startRecording}
-            className="w-full glass-bright text-white font-black text-xl py-6 rounded-[2.5rem] flex items-center justify-center gap-3 active:scale-95 transition-all shadow-[0_20px_40px_rgba(0,0,0,0.4)] border-white/20 hover:bg-white/15"
-          >
-            <Mic className="w-7 h-7" />
-            Start Capturing
-          </button>
-        ) : (
-          <button
-            onClick={stopRecording}
-            className="w-full bg-white text-black font-black text-xl py-6 rounded-[2.5rem] flex items-center justify-center gap-3 active:scale-95 transition-all shadow-[0_20px_40px_rgba(255,255,255,0.1)] hover:bg-zinc-100"
-          >
-            <Square className="w-7 h-7 fill-black" />
-            Finish & Process
-          </button>
-        )}
-      </div>
     </div>
   );
 };
