@@ -18,8 +18,12 @@ export class AIService {
     Transcript: ${transcript}`;
 
     try {
+      console.log('📡 Calling Gemini API...');
+      console.log('Model:', 'gemini-2.0-flash-exp');
+      console.log('Transcript length:', transcript.length);
+
       const response = await ai.models.generateContent({
-        model: 'gemini-2.0-flash-exp', // Fast and reliable for summarization
+        model: 'gemini-2.0-flash-exp',
         contents: [{ parts: [{ text: prompt }] }],
         config: {
           responseMimeType: "application/json",
@@ -51,13 +55,33 @@ export class AIService {
         }
       });
 
+      console.log('✅ Gemini API response received');
       const text = response.text;
-      if (!text) throw new Error("No response from Gemini");
+      if (!text) {
+        console.error('❌ Empty response from Gemini');
+        throw new Error("No response from Gemini");
+      }
 
+      console.log('📝 Parsing response...');
       return JSON.parse(text.trim()) as SummaryOutput;
-    } catch (error) {
-      console.error("Gemini AI Error:", error);
-      throw new Error('AI processing failed. Please check your network connection.');
+    } catch (error: any) {
+      console.error("❌ Gemini AI Error Details:", {
+        message: error?.message,
+        status: error?.status,
+        statusText: error?.statusText,
+        error: error
+      });
+
+      // More specific error messages
+      if (error?.message?.includes('API key')) {
+        throw new Error('Invalid API key. Please check your Gemini API key configuration.');
+      } else if (error?.message?.includes('quota') || error?.message?.includes('429')) {
+        throw new Error('API quota exceeded. Please try again later or check your Gemini API quota.');
+      } else if (error?.message?.includes('network') || error?.message?.includes('fetch')) {
+        throw new Error('Network error. Please check your internet connection and try again.');
+      } else {
+        throw new Error(`AI processing failed: ${error?.message || 'Unknown error'}. Please try again.`);
+      }
     }
   }
 }
