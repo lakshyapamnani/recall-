@@ -274,6 +274,29 @@
 }
 </script>
     <link rel="stylesheet" href="/index.css">
+
+    <!-- Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then((reg) => console.log('✅ Service Worker registered:', reg.scope))
+                    .catch((err) => console.log('❌ SW registration failed:', err));
+            });
+        }
+
+        // PWA Install Prompt
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            console.log('💾 PWA install available');
+        });
+
+        window.addEventListener('appinstalled', () => {
+            console.log('🎉 PWA installed!');
+        });
+    </script>
 </head>
 
 <body class="text-zinc-100 overflow-x-hidden selection:bg-cyan-500/30">
