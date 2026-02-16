@@ -1,6 +1,6 @@
 # Recall - Privacy First AI Recorder
 
-![GHBanner](https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6)
+
 
 > **🏆 Hackathon Demo Ready** - Privacy-first AI meeting recorder with stunning liquid glass UI
 
